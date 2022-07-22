@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanResult
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.*
@@ -17,6 +16,9 @@ class BleScanManager constructor (private val context: Context, dispatcher: Coro
     : DefaultLifecycleObserver {
     private val logTag = this.javaClass.simpleName
     private val scope = CoroutineScope(dispatcher)
+
+    private val scanResults = mutableListOf<ScanResult>()
+    val results get() = scanResults.toList()
 
     enum class State(val value: Int) {
         Stopped(0x00),
@@ -54,8 +56,10 @@ class BleScanManager constructor (private val context: Context, dispatcher: Coro
     }
 
     fun onScanResult(scanResult: ScanResult) {
-        Log.d(logTag, "ScanResult: ${scanResult.device.name} ${scanResult.device.address}")
-        mutableSharedFlowScanResult.tryEmit(scanResult)
+        if (!scanResults.map { it.device }.toList().contains(scanResult.device)) {
+            scanResults.add(scanResult)
+            mutableSharedFlowScanResult.tryEmit(scanResult)
+        }
     }
 
     fun onScanError(errorCode: Int) {

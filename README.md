@@ -1,2 +1,1 @@
-#BLE Scanner with BluetoothLeScanner Callback (ScanCallback)
-[https://developer.android.com/reference/android/bluetooth/le/ScanCallback#ScanCallback()](ScanCallback)
+#BLE Scanner with BluetoothLeScanner Callback ([ScanCallback](https://developer.android.com/reference/android/bluetooth/le/ScanCallback#ScanCallback()))

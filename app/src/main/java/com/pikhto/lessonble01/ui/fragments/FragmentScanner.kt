@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pikhto.lessonble01.BleApp01
 import com.pikhto.lessonble01.R
 import com.pikhto.lessonble01.databinding.FragmentScannerBinding
-import com.pikhto.lessonble01.models.MainActivityViewModel
-import com.pikhto.lessonble01.models.ScanViewModel
+import com.pikhto.lessonble01.ui.fragments.models.MainActivityViewModel
+import com.pikhto.lessonble01.ui.fragments.models.ScanViewModel
 import com.pikhto.lessonble01.scanner.BleScanManager
 import com.pikhto.lessonble01.ui.fragments.adapter.RvBtAdapter
 import kotlinx.coroutines.launch
@@ -49,7 +49,7 @@ class FragmentScanner : Fragment() {
             menuInflater.inflate(R.menu.menu_scan, menu)
             menu.findItem(R.id.action_scan)?.let { actionScan ->
                 lifecycleScope.launch {
-                    scanViewModel.stateFlowScannerState.collect { state ->
+                    bleScanManager.stateFlowScannerState.collect { state ->
                         when (state) {
                             BleScanManager.State.Stopped -> {
                                 actionScan.title = getString(R.string.scan_start)
@@ -71,7 +71,7 @@ class FragmentScanner : Fragment() {
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
             return when(menuItem.itemId) {
                 R.id.action_scan -> {
-                    when(scanViewModel.scannerState) {
+                    when(bleScanManager.scannerState) {
                         BleScanManager.State.Stopped -> {
                             bleScanManager.startScan()
                         }
@@ -107,7 +107,6 @@ class FragmentScanner : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bleScanManagerToViewModel()
 
         binding.apply {
             rvBtDevices.adapter = rvBtAdapter
@@ -115,8 +114,14 @@ class FragmentScanner : Fragment() {
         }
 
         lifecycleScope.launch {
-            scanViewModel.sharedFlowScanResult.collect { scanResult ->
+            bleScanManager.sharedFlowScanResult.collect { scanResult ->
                 rvBtAdapter.addScanResult(scanResult)
+            }
+        }
+
+        lifecycleScope.launch {
+            bleScanManager.sharedFlowScanResult.collect { errorCode ->
+                Log.e(logTag, "Error: $errorCode")
             }
         }
 
@@ -141,26 +146,6 @@ class FragmentScanner : Fragment() {
                 menuHost.addMenuProvider(menuProvider)
             } else {
                 menuHost.removeMenuProvider(menuProvider)
-            }
-        }
-    }
-
-    private fun bleScanManagerToViewModel() {
-        lifecycleScope.launch {
-            bleScanManager.stateFlowScannerState.collect { state ->
-                scanViewModel.changeState(state)
-            }
-        }
-
-        lifecycleScope.launch {
-            bleScanManager.sharedFlowScanResult.collect { scanResult ->
-                scanViewModel.addScanResult(scanResult)
-            }
-        }
-
-        lifecycleScope.launch {
-            bleScanManager.stateFlowError.collect { error ->
-                scanViewModel.changeError(error)
             }
         }
     }

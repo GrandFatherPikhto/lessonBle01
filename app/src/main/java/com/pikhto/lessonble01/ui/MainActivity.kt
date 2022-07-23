@@ -12,11 +12,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.lifecycleScope
 import com.pikhto.lessonble01.BleApp01
 import com.pikhto.lessonble01.R
 import com.pikhto.lessonble01.databinding.ActivityMainBinding
 import com.pikhto.lessonble01.scanner.BleScanManager
 import com.pikhto.lessonble01.scanner.RequestPermissions
+import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -62,6 +65,15 @@ class MainActivity : AppCompatActivity() {
             "android.permission.ACCESS_COARSE_LOCATION",
             "android.permission.ACCESS_FINE_LOCATION",
         ))
+
+        lifecycleScope.launch {
+            requestPermissions.sharedFlowPermission.collect { requestPermission ->
+                if (!requestPermission.granted) {
+                    finishAndRemoveTask()
+                    exitProcess(0)
+                }
+            }
+        }
 
         linkMenu(true)
     }

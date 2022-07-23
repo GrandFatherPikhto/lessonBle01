@@ -2,21 +2,16 @@ package com.pikhto.lessonble01.ui.fragments
 
 import android.bluetooth.BluetoothDevice
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.view.MenuHost
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.pikhto.lessonble01.BleApp01
 import com.pikhto.lessonble01.R
 import com.pikhto.lessonble01.databinding.FragmentDeviceBinding
-import com.pikhto.lessonble01.models.MainActivityViewModel
-import com.pikhto.lessonble01.scanner.BleScanManager
-import com.pikhto.lessonble01.ui.fragments.adapter.RvBtAdapter
-import kotlinx.coroutines.launch
+import com.pikhto.lessonble01.ui.fragments.models.MainActivityViewModel
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -58,7 +53,7 @@ class FragmentDevice : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentDeviceBinding.inflate(inflater, container, false)
         binding.apply {
@@ -79,7 +74,7 @@ class FragmentDevice : Fragment() {
                 } else {
                     includeLayout.ivPaired.setImageResource(R.drawable.ic_unpaired)
                 }
-                tvRssi.text = String.format("%03d", result.rssi)
+                tvRssi.text = getString(R.string.rssi_title, result.rssi)
                 if (result.isConnectable) {
                     ivConnectable.setImageResource(R.drawable.ic_connectable)
                 } else {

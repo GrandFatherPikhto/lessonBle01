@@ -1,4 +1,4 @@
-package com.pikhto.lessonble01.models
+package com.pikhto.lessonble01.ui.fragments.models
 
 import android.bluetooth.le.ScanResult
 import androidx.lifecycle.ViewModel

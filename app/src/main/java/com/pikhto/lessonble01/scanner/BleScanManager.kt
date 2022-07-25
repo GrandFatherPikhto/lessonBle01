@@ -86,7 +86,7 @@ class BleScanManager constructor (context: Context, dispatcher: CoroutineDispatc
         super.onDestroy(owner)
     }
 
-    fun onScanResult(scanResult: ScanResult) {
+    fun onReceiveScanResult(scanResult: ScanResult) {
         if (!scanResults.map { it.device }.toList().contains(scanResult.device)) {
             scanResults.add(scanResult)
             mutableSharedFlowScanResult.tryEmit(scanResult)

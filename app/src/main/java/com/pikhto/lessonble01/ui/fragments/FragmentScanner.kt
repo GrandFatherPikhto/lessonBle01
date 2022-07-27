@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pikhto.lessonble01.BleApp01
+import com.pikhto.lessonble01.LessonBle01
 import com.pikhto.lessonble01.R
 import com.pikhto.lessonble01.databinding.FragmentScannerBinding
 import com.pikhto.lessonble01.ui.fragments.models.MainActivityViewModel
@@ -34,7 +34,7 @@ class FragmentScanner : Fragment() {
     private val binding get() = _binding!!
 
     private val _bleScanManager by lazy {
-        (requireContext().applicationContext as BleApp01).bleScanManager
+        (requireContext().applicationContext as LessonBle01).bleScanManager
     }
     private val bleScanManager get() = _bleScanManager!!
 

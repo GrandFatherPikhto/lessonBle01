@@ -1,7 +1,6 @@
 package com.pikhto.lessonble01.ui
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,7 +12,7 @@ import android.view.MenuItem
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
-import com.pikhto.lessonble01.BleApp01
+import com.pikhto.lessonble01.LessonBle01
 import com.pikhto.lessonble01.R
 import com.pikhto.lessonble01.databinding.ActivityMainBinding
 import com.pikhto.lessonble01.scanner.BleScanManager
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private val bleScanManager by lazy {
         val scanManager = BleScanManager(this)
-        (applicationContext as BleApp01).bleScanManager = scanManager
+        (applicationContext as LessonBle01).bleScanManager = scanManager
         scanManager
     }
 

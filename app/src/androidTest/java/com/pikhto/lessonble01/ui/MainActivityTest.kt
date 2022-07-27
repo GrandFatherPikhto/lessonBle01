@@ -1,7 +1,5 @@
 package com.pikhto.lessonble01.ui
 
-import androidx.lifecycle.Lifecycle
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
@@ -10,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.pikhto.lessonble01.BleApp01
+import com.pikhto.lessonble01.LessonBle01
 import com.pikhto.lessonble01.scanner.BleScanManager
 import com.pikhto.lessonble01.R
 
@@ -32,7 +30,7 @@ class MainActivityTest {
     fun setUp() {
         // activityRule.scenario.moveToState(Lifecycle.State.CREATED)
         activityRule.scenario.onActivity { mainActivity ->
-            (mainActivity.applicationContext as BleApp01).bleScanManager?.let {
+            (mainActivity.applicationContext as LessonBle01).bleScanManager?.let {
                 bleScanManager = it
             }
         }

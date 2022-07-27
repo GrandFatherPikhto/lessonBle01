@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.pikhto.lessonble01.BleApp01
+import com.pikhto.lessonble01.LessonBle01
 import com.pikhto.lessonble01.R
 import com.pikhto.lessonble01.databinding.FragmentDeviceBinding
 import com.pikhto.lessonble01.ui.fragments.models.MainActivityViewModel
@@ -26,7 +26,7 @@ class FragmentDevice : Fragment() {
     private val binding get() = _binding!!
 
     private val _bleScanManager by lazy {
-        (requireContext().applicationContext as BleApp01).bleScanManager
+        (requireContext().applicationContext as LessonBle01).bleScanManager
     }
     private val bleScanManager get() = _bleScanManager!!
 

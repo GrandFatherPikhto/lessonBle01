@@ -48,7 +48,7 @@ class BleScanManager constructor (context: Context, dispatcher: CoroutineDispatc
     private val bluetoothLeScanner = bluetoothAdapter.bluetoothLeScanner
 
     private val mutableStateFlowScannerState = MutableStateFlow(State.Stopped)
-    val stateFlowScannerState get() = mutableStateFlowScannerState.asStateFlow()
+    val stateFlowScanState get() = mutableStateFlowScannerState.asStateFlow()
     val scannerState get() = mutableStateFlowScannerState.value
 
     private val mutableSharedFlowScanResult = MutableSharedFlow<ScanResult>(replay = 100)
@@ -58,24 +58,7 @@ class BleScanManager constructor (context: Context, dispatcher: CoroutineDispatc
     val stateFlowError get() = mutableStateFlowError.asSharedFlow()
     val error get() = mutableStateFlowError.value
 
-    private var _scanIdling:ScanIdling? = null
-    val scanIdling: ScanIdling get() {
-        return ScanIdling.getInstance().let {
-            _scanIdling = it
-            it
-        }
-    }
-
-    init {
-        scope.launch {
-            sharedFlowScanResult.collect { scanResult ->
-                _scanIdling?.let {
-                    it.scanned = true
-                }
-            }
-        }
-    }
-
+    val scanIdling: ScanIdling = ScanIdling.getInstance(this)
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
@@ -100,17 +83,11 @@ class BleScanManager constructor (context: Context, dispatcher: CoroutineDispatc
     }
 
     fun startScan() {
-        _scanIdling?.let {
-            it.scanned = false
-        }
         bluetoothLeScanner.startScan(bleScanCallback)
         mutableStateFlowScannerState.tryEmit(State.Scanning)
     }
 
     fun stopScan() {
-        _scanIdling?.let {
-            it.scanned = true
-        }
         bluetoothLeScanner.stopScan(bleScanCallback)
         mutableStateFlowScannerState.tryEmit(State.Stopped)
     }

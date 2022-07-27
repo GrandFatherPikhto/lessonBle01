@@ -49,7 +49,7 @@ class FragmentScanner : Fragment() {
             menuInflater.inflate(R.menu.menu_scan, menu)
             menu.findItem(R.id.action_scan)?.let { actionScan ->
                 lifecycleScope.launch {
-                    bleScanManager.stateFlowScannerState.collect { state ->
+                    bleScanManager.stateFlowScanState.collect { state ->
                         when (state) {
                             BleScanManager.State.Stopped -> {
                                 actionScan.title = getString(R.string.scan_start)
